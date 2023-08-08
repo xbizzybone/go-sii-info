@@ -51,6 +51,48 @@ localhost:3000/sii/contributor-info/RUT/76192083-9
             "category": 1,
             "is_vat_affected": false
         }
+    ],
+    "stamped_documents": [
+        {
+            "name": "Factura Electronica",
+            "last_year_stamp": 2023
+        },
+        {
+            "name": "Factura No Afecta O Exenta Electronica",
+            "last_year_stamp": 2015
+        },
+        {
+            "name": "Boleta Electronica",
+            "last_year_stamp": 2023
+        },
+        {
+            "name": "Boleta Exenta Electronica",
+            "last_year_stamp": 2016
+        },
+        {
+            "name": "Factura Compra Electronica",
+            "last_year_stamp": 2023
+        },
+        {
+            "name": "Guia Despacho Electronica",
+            "last_year_stamp": 2016
+        },
+        {
+            "name": "Nota Debito Electronica",
+            "last_year_stamp": 2023
+        },
+        {
+            "name": "Nota Credito Electronica",
+            "last_year_stamp": 2023
+        },
+        {
+            "name": "Boleta De Terceros Electronicas",
+            "last_year_stamp": 2023
+        },
+        {
+            "name": "Factura De Exportacion Electronica",
+            "last_year_stamp": 2021
+        }
     ]
 }
 ```
