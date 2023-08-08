@@ -5,6 +5,7 @@
 - [go-sii-info](#go-sii-info)
   - [Table of Contents](#table-of-contents)
   - [About](#about)
+  - [Localhost](#localhost)
   - [Usage](#usage)
     - [Http GET](#http-get)
       - [Result](#result)
@@ -12,6 +13,12 @@
 ## About
 
 This is a simple Go library for getting contributor information from the [SII](https://www.sii.cl/) (Servicio de Impuestos Internos) of Chile.
+
+## Localhost
+
+```bash
+go run main.go
+```
 
 ## Usage
 
