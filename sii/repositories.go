@@ -83,57 +83,8 @@ func (r *repository) extractContributorInfo(doc *goquery.Document, user *User) C
 	result.IsAvailableToPayTaxInForeignCurrency = utils.GetBooleanFromYesNoString(foreignTaxSpan)
 	result.IsSmallerCompany = utils.GetBooleanFromYesNoString(smallerCompanySpan)
 
-	doc.Find("table").Eq(0).Find("tr").Each(func(indexTr int, rowHtml *goquery.Selection) {
-		if indexTr == 0 { // Skip header row
-			return
-		}
-
-		var commercialActivity CommercialActivity
-		rowHtml.Find("td").Each(func(indexTd int, cellHtml *goquery.Selection) {
-			text := strings.TrimSpace(cellHtml.Text())
-			switch indexTd {
-			case 0: // Name
-				commercialActivity.Name = text
-			case 1: // Code
-				code, err := strconv.Atoi(text)
-				if err != nil {
-					r.logger.Error("Error converting code to int", zap.Error(err))
-					break
-				}
-				commercialActivity.Code = code
-			case 2: // Category
-				commercialActivity.Category = utils.FormatCategory(text)
-			case 3: // Is VAT affected
-				commercialActivity.IsVATAffected = (text == "SI")
-			}
-		})
-
-		result.CommercialActivities = append(result.CommercialActivities, commercialActivity)
-	})
-
-	doc.Find("table").Eq(2).Find("tr").Each(func(indexTr int, rowHtml *goquery.Selection) {
-		if indexTr == 0 { // Skip header row
-			return
-		}
-
-		var stampedDocument StampedDocument
-		rowHtml.Find("td").Each(func(indexTd int, cellHtml *goquery.Selection) {
-			text := strings.TrimSpace(cellHtml.Text())
-			switch indexTd {
-			case 0: // Document type
-				stampedDocument.Name = text
-			case 1: // Document year
-				year, err := strconv.Atoi(text)
-				if err != nil {
-					r.logger.Error("Error converting year to int", zap.Error(err))
-					break
-				}
-				stampedDocument.LastYearStamp = year
-			}
-		})
-
-		result.StampedDocuments = append(result.StampedDocuments, stampedDocument)
-	})
+	result.CommercialActivities = r.GetCommercialActivitiesFromDocument(doc)
+	result.StampedDocuments = r.GetStampedDocumentsFromDocument(doc)
 
 	return result
 }
@@ -161,4 +112,68 @@ func (r *repository) fetchCaptcha() (string, string, error) {
 	}
 
 	return string(code[36:40]), data.TxtCaptcha, nil
+}
+
+func (r *repository) GetCommercialActivitiesFromDocument(doc *goquery.Document) []CommercialActivity {
+	var commercialActivities []CommercialActivity
+
+	doc.Find("table").Eq(0).Find("tr").Each(func(indexTr int, rowHtml *goquery.Selection) {
+		if indexTr == 0 { // Skip header row
+			return
+		}
+
+		var commercialActivity CommercialActivity
+		rowHtml.Find("td").Each(func(indexTd int, cellHtml *goquery.Selection) {
+			text := strings.TrimSpace(cellHtml.Text())
+			switch indexTd {
+			case 0: // Name
+				commercialActivity.Name = text
+			case 1: // Code
+				code, err := strconv.Atoi(text)
+				if err != nil {
+					r.logger.Error("Error converting code to int", zap.Error(err))
+					break
+				}
+				commercialActivity.Code = code
+			case 2: // Category
+				commercialActivity.Category = utils.FormatCategory(text)
+			case 3: // Is VAT affected
+				commercialActivity.IsVATAffected = (text == "SI")
+			}
+		})
+
+		commercialActivities = append(commercialActivities, commercialActivity)
+	})
+
+	return commercialActivities
+}
+
+func (r *repository) GetStampedDocumentsFromDocument(doc *goquery.Document) []StampedDocument {
+	var stampedDocuments []StampedDocument
+
+	doc.Find("table").Eq(2).Find("tr").Each(func(indexTr int, rowHtml *goquery.Selection) {
+		if indexTr == 0 { // Skip header row
+			return
+		}
+
+		var stampedDocument StampedDocument
+		rowHtml.Find("td").Each(func(indexTd int, cellHtml *goquery.Selection) {
+			text := strings.TrimSpace(cellHtml.Text())
+			switch indexTd {
+			case 0: // Document type
+				stampedDocument.Name = text
+			case 1: // Document year
+				year, err := strconv.Atoi(text)
+				if err != nil {
+					r.logger.Error("Error converting year to int", zap.Error(err))
+					break
+				}
+				stampedDocument.LastYearStamp = year
+			}
+		})
+
+		stampedDocuments = append(stampedDocuments, stampedDocument)
+	})
+
+	return stampedDocuments
 }
