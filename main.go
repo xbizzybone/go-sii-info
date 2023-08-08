@@ -34,7 +34,7 @@ func init() {
 		log.Fatal(err)
 	}
 
-	zapLogger = zapLogger.With(zap.String("service", "go-clean-code"))
+	zapLogger = zapLogger.With(zap.String("service", "go-sii-info"))
 	zapLogger.Info("Logger initialized")
 }
 
