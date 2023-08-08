@@ -111,6 +111,30 @@ func (r *repository) extractContributorInfo(doc *goquery.Document, user *User) C
 		result.CommercialActivities = append(result.CommercialActivities, commercialActivity)
 	})
 
+	doc.Find("table").Eq(2).Find("tr").Each(func(indexTr int, rowHtml *goquery.Selection) {
+		if indexTr == 0 { // Skip header row
+			return
+		}
+
+		var stampedDocument StampedDocument
+		rowHtml.Find("td").Each(func(indexTd int, cellHtml *goquery.Selection) {
+			text := strings.TrimSpace(cellHtml.Text())
+			switch indexTd {
+			case 0: // Document type
+				stampedDocument.Name = text
+			case 1: // Document year
+				year, err := strconv.Atoi(text)
+				if err != nil {
+					r.logger.Error("Error converting year to int", zap.Error(err))
+					break
+				}
+				stampedDocument.LastYearStamp = year
+			}
+		})
+
+		result.StampedDocuments = append(result.StampedDocuments, stampedDocument)
+	})
+
 	return result
 }
 

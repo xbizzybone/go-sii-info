@@ -9,6 +9,7 @@ type ContributorInfo struct {
 	IsAvailableToPayTaxInForeignCurrency bool                 `json:"is_available_to_pay_tax_in_foreign_currency"`
 	IsSmallerCompany                     bool                 `json:"is_smaller_company"`
 	CommercialActivities                 []CommercialActivity `json:"commercial_activities"`
+	StampedDocuments                     []StampedDocument    `json:"stamped_documents"`
 }
 
 type CommercialActivity struct {
@@ -16,6 +17,11 @@ type CommercialActivity struct {
 	Code          int    `json:"code"`
 	Category      int    `json:"category"`
 	IsVATAffected bool   `json:"is_vat_affected"`
+}
+
+type StampedDocument struct {
+	Name          string `json:"name"`
+	LastYearStamp int    `json:"last_year_stamp"`
 }
 
 type User struct {

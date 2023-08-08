@@ -16,6 +16,7 @@ type ContributorInfoResponse struct {
 	IsAvailableToPayTaxInForeignCurrency bool                 `json:"is_available_to_pay_tax_in_foreign_currency"`
 	IsSmallerCompany                     bool                 `json:"is_smaller_company"`
 	CommercialActivities                 []CommercialActivity `json:"commercial_activities"`
+	StampedDocuments                     []StampedDocument    `json:"stamped_documents"`
 }
 
 type CaptchaResponse struct {

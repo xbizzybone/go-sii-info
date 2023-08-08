@@ -63,6 +63,7 @@ func (c *controller) GetContributorInfo(ctx *fiber.Ctx) error {
 		IsAvailableToPayTaxInForeignCurrency: result.IsAvailableToPayTaxInForeignCurrency,
 		IsSmallerCompany:                     result.IsSmallerCompany,
 		CommercialActivities:                 result.CommercialActivities,
+		StampedDocuments:                     result.StampedDocuments,
 	}
 
 	return ctx.JSON(contributorInfoResponse)
